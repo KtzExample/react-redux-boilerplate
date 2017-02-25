@@ -2,33 +2,31 @@
  * Created by ktz on 17. 2. 25.
  */
 import { combineReducers } from 'redux';
-import { ADD_TODO, COMPLETE_TODO, SET_VISIBILITY_FILTER, VisibilityFilters } from './actions';
-const { SHOW_ALL } = VisibilityFilters;
+import { SET_VISIBILITY_FILTER, ADD_TODO, COMPLETE_TODO, SHOW_ALL } from './actionTypes';
+import {List} from 'immutable'
 
 function visibilityFilter(state = SHOW_ALL, action) {
     switch (action.type) {
         case SET_VISIBILITY_FILTER:
-            return action.filter;
+            return action.payload.filter;
         default:
             return state;
     }
 }
 
-function todos(state = [], action) {
+const initialToDos = List();
+function todos(state = initialToDos, action) {
     switch (action.type) {
         case ADD_TODO:
-            return [...state, {
-                text: action.text,
+            return state.push({
+                text: action.payload.text,
                 completed: false
-            }];
+            });
         case COMPLETE_TODO:
-            return [
-                ...state.slice(0, action.index),
-                Object.assign({}, state[action.index], {
-                    completed: true
-                }),
-                ...state.slice(action.index + 1)
-            ];
+            return state.update(action.payload.index, todo => {
+                todo.completed = true;
+                return todo;
+            });
         default:
             return state;
     }

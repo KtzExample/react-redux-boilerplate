@@ -1,7 +1,7 @@
 /**
  * Created by ktz on 17. 2. 25.
  */
-import React, { findDOMNode, Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 
 export default class AddTodo extends Component {
     render() {

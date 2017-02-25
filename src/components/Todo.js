@@ -8,13 +8,17 @@ export default class Todo extends Component {
         return (
             <li
                 onClick={this.props.onClick}
-                style={{
-                    textDecoration: this.props.completed ? 'line-through' : 'none',
-                    cursor: this.props.completed ? 'default' : 'pointer'
-                }}>
+                style={this.getStyle()}>
                 {this.props.text}
             </li>
         );
+    }
+
+    getStyle() {
+        return {
+            textDecoration: this.props.completed ? 'line-through' : 'none',
+            cursor: this.props.completed ? 'default' : 'pointer'
+        }
     }
 }
 
