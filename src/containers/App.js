@@ -1,29 +1,29 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { addTodo, completeTodo, setVisibilityFilter, VisibilityFilters } from '../core/redux/actions';
+import { bindActionCreators } from 'redux'
+import * as ToDoActions from '../core/redux/todo/actions';
+import { addTodo, completeTodo, setVisibilityFilter, VisibilityFilters } from '../core/redux/todo/actions';
 import AddTodo from '../components/AddTodo';
 import TodoList from '../components/TodoList';
 import Footer from '../components/Footer';
 
 class App extends Component {
     render() {
-        // connect() 호출을 통해 주입됨:
-        const { dispatch, visibleTodos, visibilityFilter } = this.props;
         return (
             <div>
                 <AddTodo
                     onAddClick={text =>
-                        dispatch(addTodo(text))
+                        ToDoActions.addTodo(text)
                     } />
                 <TodoList
                     todos={visibleTodos}
                     onTodoClick={index =>
-                        dispatch(completeTodo(index))
+                        ToDoActions.completeTodo(index)
                     } />
                 <Footer
                     filter={visibilityFilter}
                     onFilterChange={nextFilter =>
-                        dispatch(setVisibilityFilter(nextFilter))
+                        ToDoActions.setVisibilityFilter(nextFilter)
                     } />
             </div>
         );
@@ -31,7 +31,7 @@ class App extends Component {
 }
 
 App.propTypes = {
-    visibleTodos: React.PropTypes.object,
+    ToDoStore: React.PropTypes.object,
     visibilityFilter: PropTypes.oneOf([
         'SHOW_ALL',
         'SHOW_COMPLETED',
@@ -52,14 +52,18 @@ function selectTodos(todos, filter) {
     }
 }
 
-// 주어진 전역 상태에서 어떤 props를 주입하기를 원하나요?
-// 노트: 더 나은 성능을 위해서는 https://github.com/faassen/reselect 를 사용하세요
-function select(state) {
+const mapStateToProps = (state) => {
     return {
-        visibleTodos: selectTodos(state.todos, state.visibilityFilter),
-        visibilityFilter: state.visibilityFilter
+        ToDoStore: state.ToDoStore,
     };
-}
+};
 
-// 디스패치와 상태를 주입하려는 컴포넌트를 감싸줍니다.
-export default connect(select)(App);
+const mapDispatchToProps = (dispatch) =>  {
+    return {
+        dispatch: dispatch,
+        ToDoActions: bindActionCreators(ToDoActions, dispatch)
+    };
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
