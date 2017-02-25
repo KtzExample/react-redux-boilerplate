@@ -6,4 +6,4 @@ $ npm install
 $ npm start
 ```
 
-Now you can see in [browser](localhost:3000)
+Now you can see in [browser](http://localhost:3000)
