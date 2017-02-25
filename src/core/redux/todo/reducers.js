@@ -5,7 +5,7 @@ import { combineReducers } from 'redux';
 import { SET_VISIBILITY_FILTER, ADD_TODO, COMPLETE_TODO, SHOW_ALL } from './actionTypes';
 import {List} from 'immutable'
 
-function visibilityFilter(state = SHOW_ALL, action) {
+export function visibilityFilter(state = SHOW_ALL, action) {
     switch (action.type) {
         case SET_VISIBILITY_FILTER:
             return action.payload.filter;
@@ -15,7 +15,7 @@ function visibilityFilter(state = SHOW_ALL, action) {
 }
 
 const initialToDos = List();
-function todos(state = initialToDos, action) {
+export function todos(state = initialToDos, action) {
     switch (action.type) {
         case ADD_TODO:
             return state.push({
@@ -24,17 +24,16 @@ function todos(state = initialToDos, action) {
             });
         case COMPLETE_TODO:
             return state.update(action.payload.index, todo => {
-                todo.completed = true;
-                return todo;
+                return Object.assign({}, todo, {completed: !todo.completed})
             });
         default:
             return state;
     }
 }
 
-const todoApp = combineReducers({
+const ToDoReducers = combineReducers({
     visibilityFilter,
     todos
 });
 
-export default todoApp;
+export default ToDoReducers;

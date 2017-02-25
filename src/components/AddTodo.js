@@ -16,14 +16,12 @@ export default class AddTodo extends Component {
     }
 
     handleClick(e) {
-        // const node = findDOMNode(this.refs.input);
-        // const text = node.value.trim();
         let text = this.refs.input.value;
-        this.props.onAddClick(text);
+        this.props.addToDo(text);
         this.refs.input.value = '';
     }
 }
 
 AddTodo.propTypes = {
-    onAddClick: PropTypes.func.isRequired
+    addToDo: PropTypes.func,
 };

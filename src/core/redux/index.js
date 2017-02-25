@@ -4,11 +4,11 @@
 
 import { combineReducers } from 'redux'
 import {routerReducer} from 'react-router-redux'
-import ToDoReducers from './todo/reducers';
+import * as ToDoReducers from './todo/reducers';
 
-const ToDoStore = combineReducers({
-    ToDoReducers: ToDoReducers,
+const ToDoStore = combineReducers(ToDoReducers);
+
+export const rootStore = combineReducers({
+    ToDoReducers: ToDoStore,
     routing: routerReducer
 });
-
-export default ToDoStore;

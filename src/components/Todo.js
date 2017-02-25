@@ -7,7 +7,7 @@ export default class Todo extends Component {
     render() {
         return (
             <li
-                onClick={this.props.onClick}
+                onClick={event => this.completeToDo(event)}
                 style={this.getStyle()}>
                 {this.props.text}
             </li>
@@ -20,10 +20,15 @@ export default class Todo extends Component {
             cursor: this.props.completed ? 'default' : 'pointer'
         }
     }
+
+    completeToDo(event) {
+        this.props.completeTodo(this.props.index)
+    }
 }
 
 Todo.propTypes = {
-    onClick: PropTypes.func.isRequired,
+    completeTodo: PropTypes.func.isRequired,
     text: PropTypes.string.isRequired,
+    index: PropTypes.number,
     completed: PropTypes.bool.isRequired
 };

@@ -1,8 +1,7 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'
 import * as ToDoActions from '../core/redux/todo/actions';
-import { addTodo, completeTodo, setVisibilityFilter, VisibilityFilters } from '../core/redux/todo/actions';
 import AddTodo from '../components/AddTodo';
 import TodoList from '../components/TodoList';
 import Footer from '../components/Footer';
@@ -12,49 +11,29 @@ class App extends Component {
         return (
             <div>
                 <AddTodo
-                    onAddClick={text =>
-                        ToDoActions.addTodo(text)
-                    } />
+                    addToDo={this.props.ToDoActions.addTodo} />
                 <TodoList
-                    todos={visibleTodos}
-                    onTodoClick={index =>
-                        ToDoActions.completeTodo(index)
-                    } />
+                    todos={this.props.todos}
+                    completeTodo={this.props.ToDoActions.completeTodo}
+                    visibilityFilter={this.props.visibilityFilter}/>
                 <Footer
-                    filter={visibilityFilter}
-                    onFilterChange={nextFilter =>
-                        ToDoActions.setVisibilityFilter(nextFilter)
-                    } />
+                    filter={this.props.visibilityFilter}
+                    setVisibilityFilter={this.props.ToDoActions.setVisibilityFilter} />
             </div>
         );
     }
 }
 
-App.propTypes = {
-    ToDoStore: React.PropTypes.object,
-    visibilityFilter: PropTypes.oneOf([
-        'SHOW_ALL',
-        'SHOW_COMPLETED',
-        'SHOW_ACTIVE'
-    ]).isRequired
+App.PropTypes = {
+    todos: React.PropTypes.object,
+    visibilityFilter: React.string,
+    ToDoActions: React.PropTypes.object
 };
-
-function selectTodos(todos, filter) {
-    switch (filter) {
-        case VisibilityFilters.SHOW_ALL:
-            return todos;
-        case VisibilityFilters.SHOW_COMPLETED:
-            return todos.filter(todo => todo.completed);
-        case VisibilityFilters.SHOW_ACTIVE:
-            return todos.filter(todo => !todo.completed);
-        default:
-            return todos;
-    }
-}
 
 const mapStateToProps = (state) => {
     return {
-        ToDoStore: state.ToDoStore,
+        todos: state.todos,
+        visibilityFilter: state.visibilityFilter
     };
 };
 
