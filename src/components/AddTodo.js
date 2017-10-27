@@ -1,7 +1,8 @@
 /**
  * Created by ktz on 17. 2. 25.
  */
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types'
 
 export default class AddTodo extends Component {
     render() {
@@ -23,5 +24,5 @@ export default class AddTodo extends Component {
 }
 
 AddTodo.propTypes = {
-    addToDo: PropTypes.func,
+    addToDo: PropTypes.func.isRequired,
 };
